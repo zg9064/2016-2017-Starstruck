@@ -8,6 +8,8 @@
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
 
+// eliminates warning for "unreferenced" functions
+#pragma systemFile
 
 #define LOOP_SPEED              25
 #define MAX_POWER              127
