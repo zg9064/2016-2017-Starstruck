@@ -8,9 +8,6 @@
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
 
-// eliminates warning for "unreferenced" functions
-#pragma systemFile
-
 #define LOOP_SPEED              25
 #define MAX_POWER              127
 #define MIN_POWER             -127
@@ -49,7 +46,7 @@ long            motor_driveL;            /// LEFT
 
 /*
 To Do List
-1. Try an empty ma                                                                                 in()
+1. Try an empty main()
 2. what does it mean to have greater resolution in sensors?
 3. startTask( ); gotta use this within tasks
 4. nMotorEncoder[ ]
@@ -86,14 +83,10 @@ move( int time, int left, int right )
 void
 setArms( int time, int power )
 {
-	motor[ leftLift ] = power;
-	motor[ topRightLift ] = power;
-	motor[ bottomRightLift ] = power;
+
 	delay(time);
 
-	motor[ leftLift ] = 0;
-	motor[ topRightLift ] = 0;
-	motor[ bottomRightLift ] = 0;
+
 	delay(100);
 }
 
