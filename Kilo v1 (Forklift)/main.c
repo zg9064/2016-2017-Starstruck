@@ -250,7 +250,6 @@ task usercontrol()
 
 
 		//operate the lift
-		switch "6D" to "6U"
 		if(vexRT[ Btn5U ] || vexRT[ Btn6U ]) //test with == 1
 		{
 		 setArms(-10); // keeps the lift up when holding stars
