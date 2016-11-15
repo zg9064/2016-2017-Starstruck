@@ -1,7 +1,7 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
 #pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, I2C_1,  frontRight,     sensorQuadEncoderOnI2CPort,    , AutoAssign )
-#pragma config(Sensor, I2C_2,  frontLeft,      sensorQuadEncoderOnI2CPort,    , AutoAssign )
+#pragma config(Sensor, I2C_1,  RDrivebaseEncoder,     sensorQuadEncoderOnI2CPort,    , AutoAssign )
+#pragma config(Sensor, I2C_2,  LDriveBaseEncoder,      sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, PIDControl, driveLeft, encoderPort, I2C_1)
 #pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, PIDControl, driveRight, encoderPort, I2C_2)
 #pragma config(Motor,  port4,           leftLift,      tmotorVex393_MC29, openLoop, driveLeft)
@@ -66,24 +66,24 @@ To Do List
 //setters
 
 void
-setMotorL( int valueL )
+setLDriveBase( int valueL )
 {
-
+	motor[ LDriveBase ] = valueL;
 }
 
 
 void
-setMotorR( int valueR )
+setRDriveBase( int valueR )
 {
-
+	motor[ RDriveBase ] = valueR;
 }
 
 //action methods
 void
 move( int time, int left, int right )
 {
-	setMotorL( left );
-	setMotorR( right );
+	setLDriveBase( left );
+	setRDriveBase( right );
 	delay(time);
 
 	setMotorR(0);
@@ -94,18 +94,30 @@ move( int time, int left, int right )
 void
 setArms( int time, int power )
 {
-
+	motor[ leftMidLift ] = power;
+	motor[ leftLift ] = power;
+	motor[ rightMidLift ] = power;
+	motor[ rightLift ] = power;
 	delay(time);
 
-
+	motor[ leftMidLift ] = 0;
+	motor[ leftLift ] = 0;
+	motor[ rightMidLift ] = 0;
+	motor[ rightLift ] = 0;
 	delay(100);
 }
 
+void
+setClaw( int time, int power)
+{
 
+}
 //stops everything
 void
 stopAll()
 {
+	move( 1000, 0, 0 );
+	setArms( 1000, 0 );
 
 }
 
@@ -214,6 +226,12 @@ task usercontrol()
 {
 	while (true)
 	{
+		setMotorL(abs(vexRT[ Ch3 ]) > 25 ? vexRT[ Ch3 ] : 0); //mess with deadbands
+		setMotorR(abs(vexRT[ Ch2 ]) > 25 ? vexRT[ Ch2 ] : 0);
+
+		if(vexRT[ Btn5U ] || vexRT[ Btn6U ]) //test with == 1
+		 setArms(MAX_POWER); // keeps the lift up when holding stars
+
 		wait1Msec(20); //don't hog the CPU :)
 	}
 }
