@@ -110,7 +110,13 @@ setArms( int time, int power )
 void
 setClaw( int time, int power)
 {
-
+	motor[claw]=power;
+	delay(time);
+	motor[claw]=0;
+}
+void
+setClaw(int power){
+	motor[claw]=power;
 }
 //stops everything
 void
@@ -118,6 +124,7 @@ stopAll()
 {
 	move( 1000, 0, 0 );
 	setArms( 1000, 0 );
+	setClaw(1000,0)
 
 }
 
@@ -231,7 +238,15 @@ task usercontrol()
 
 		if(vexRT[ Btn5U ] || vexRT[ Btn6U ]) //test with == 1
 		 setArms(MAX_POWER); // keeps the lift up when holding stars
-
+		if(vexRT[Btn1]){
+		 setClaw(MAX_POWER);
+		}
+		else if(vexRT[Btn2]){
+			setClaw(MIN_POWER);
+		}
+		else{
+			setClaw(0);
+		}
 		wait1Msec(20); //don't hog the CPU :)
 	}
 }
