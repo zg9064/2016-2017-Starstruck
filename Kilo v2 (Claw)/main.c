@@ -30,6 +30,8 @@
 
 #define PID_INTEGRAL_LIMIT  50
 
+#define SAFETY_DELAY				200
+
 float  pid_Kp = 2.0;
 float  pid_Ki = 0.04;
 float  pid_Kd = 0.0;
@@ -62,39 +64,54 @@ To Do List
 3. startTask( ); gotta use this within tasks
 4. nMotorEncoder[ ]
 5. Stop sudden acceleration
+6. Map out TeleOp buttons
+7. Fiddle with claw and arm function in TeleOp
 */
 
 //setters
 
 void
-setLDriveBase( int valueL )
+setLDriveBase( int valueL, int time )
 {
+	motor[ LDriveBase ] = valueL/2;
+	delay(SAFETY_DELAY);
+
 	motor[ LDriveBase ] = valueL;
+	delay(time);
 }
 
 
 void
-setRDriveBase( int valueR )
+setRDriveBase( int valueR, int time )
 {
+	motor[ RDriveBase ] = valueR/2;
+	delay(SAFETY_DELAY);
+
 	motor[ RDriveBase ] = valueR;
+	delay(time);
 }
 
 //action methods
 void
 move( int time, int left, int right )
 {
-	setLDriveBase( left );
-	setRDriveBase( right );
-	delay(time);
+	setLDriveBase( left, time );
+	setRDriveBase( right, time );
 
-	setMotorR(0);
-	setMotorL(0);
+	setLDriveBase( left, 0 );
+	setRDriveBase( right, 0 );
 }
 
 //overload this method
 void
 setArms( int time, int power )
 {
+	motor[ leftMidLift ] = power/2;
+	motor[ leftLift ] = power/2;
+	motor[ rightMidLift ] = power/2;
+	motor[ rightLift ] = power/2;
+	delay(SAFETY_DELAY);
+
 	motor[ leftMidLift ] = power;
 	motor[ leftLift ] = power;
 	motor[ rightMidLift ] = power;
@@ -111,14 +128,15 @@ setArms( int time, int power )
 void
 setClaw( int time, int power)
 {
-	motor[claw]=power;
+	motor[ claw ] = power/2;
+	delay(SAFETY_DELAY);
+
+	motor[ claw ] = power;
 	delay(time);
-	motor[claw]=0;
+	motor[ claw ] =0 ; //delay?
 }
-void
-setClaw(int power){
-	motor[claw]=power;
-}
+
+
 //stops everything
 void
 stopAll()
@@ -239,8 +257,8 @@ task usercontrol()
 
 		if(vexRT[ Btn5U ] || vexRT[ Btn6U ]) //test with == 1
 		 setArms(MAX_POWER); // keeps the lift up when holding stars
-		if(vexRT[Btn1]){
-		 setClaw(MAX_POWER);
+		if(vexRT[ Btn1 ]){
+		 setClaw( MAX_POWER );
 		}
 		else if(vexRT[Btn2]){
 			setClaw(MIN_POWER);
