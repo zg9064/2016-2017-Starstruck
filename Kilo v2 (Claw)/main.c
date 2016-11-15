@@ -61,6 +61,7 @@ To Do List
 2. what does it mean to have greater resolution in sensors?
 3. startTask( ); gotta use this within tasks
 4. nMotorEncoder[ ]
+5. Stop sudden acceleration
 */
 
 //setters
