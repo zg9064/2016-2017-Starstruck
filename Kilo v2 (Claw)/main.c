@@ -94,6 +94,12 @@ setLDriveBase( int valueR, int time )
 	delay(time);
 }
 
+void
+setDriveBase(int power){
+setRDriveBase(power);
+setLDriveBase(power);
+}
+
 //action methods
 void
 move( int time, int left, int right )
