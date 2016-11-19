@@ -94,8 +94,13 @@ setRDriveBase( right, time );
 setLDriveBase( left, 0 );
 setRDriveBase( right, 0 );
 }
-
 */
+void
+setDriveBase(int power){
+	setRDriveBase(power);
+	setLDriveBase(power);
+}
+
 void
 setArms( int time, int power )
 {
@@ -152,11 +157,11 @@ void setClaw(int val){
 
 //stops everything
 void
-stopAll()
-{
-	//move( 1000, 0, 0 );
-	setArms( 1000, 0 );
-	setClaw(1000,0)
+allStop(){
+	setRDriveBase(0);
+	setLDriveBase(0);
+	setArms(0);
+	setClaw(0)
 
 }
 
@@ -254,7 +259,29 @@ void pre_auton()
 
 //tasks
 task autonomous(){
-	//closeCLaw();
+	setClaw(MAX_POWER);
+	delay(1250);
+	setClaw(10);
+	setArms(MIN_POWER);
+	delay(1000);
+	setArms(0);
+	setDriveBase(MAX_POWER);
+	delay(500);
+	setRDriveBase(MAX_POWER);
+	setLDriveBase(MIN_POWER);
+	delay(750);
+	allStop();
+	delay(1000);
+	setDriveBase(MIN_POWER);
+	delay(1250);
+	setDriveBase(0);
+	setArms(MIN_POWER);
+	delay(1500);
+	setArms(0);
+	setClaw(MIN_POWER);
+	delay(200);
+	setClaw(0);
+
 }
 
 
