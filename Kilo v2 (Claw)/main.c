@@ -77,12 +77,6 @@ setDriveBase(int power){
 	setLDriveBase(power);
 }
 
-void
-setDriveBase(int power){
-setRDriveBase(power);
-setLDriveBase(power);
-}
-
 //action methods
 
 
