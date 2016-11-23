@@ -120,10 +120,7 @@ setArms( int power )
 	delay(100);
 }
 
-void setClaw(int val){
-	motor[ leftClaw ]=val;
-	motor[ rightClaw ]=val;
-}
+
 
 //stops everything
 void
@@ -260,8 +257,6 @@ task usercontrol()
 	  else setArms(0); //is this necessary?
 
 		setArms((vexRT[ Btn6U ] - vexRT[ Btn5U ]) * -127);
-
-		setClaw((vexRT[ Btn6D] - vexRT[ Btn5D ])*-127);
 
 		//killswitch
 		if(vexRT[ Btn8D ] == 1)
