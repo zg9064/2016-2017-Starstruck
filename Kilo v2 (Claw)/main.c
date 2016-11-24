@@ -313,9 +313,7 @@ task usercontrol()
 		 setArms(10);
 		*/
 
-		setLift((vexRT[ Btn5U ] - vexRT[ Btn6U ]) * -127);
 
-		setClaw((vexRT[ Btn7D ] - vexRT[ Btn8D ]) * -127);
 
 		wait1Msec(20); //don't hog the CPU :)
 	}
