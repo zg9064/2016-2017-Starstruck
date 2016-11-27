@@ -1,10 +1,8 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
-#pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, I2C_1,  RDrivebaseEncoder, sensorQuadEncoderOnI2CPort,    , AutoAssign )
-#pragma config(Sensor, I2C_2,  LDriveBaseEncoder, sensorQuadEncoderOnI2CPort,    , AutoAssign )
+#pragma config(Sensor, in1,    test,           sensorPotentiometer)
 #pragma config(Motor,  port1,           rightClaw,     tmotorVex393_HBridge, openLoop, driveRight)
-#pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_1)
-#pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, reversed, driveRight, encoderPort, I2C_2)
+#pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft)
+#pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, reversed, driveRight)
 #pragma config(Motor,  port4,           leftLift,      tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port5,           leftClaw,      tmotorVex393_MC29, openLoop, reversed, driveLeft)
 #pragma config(Motor,  port6,           rightMidLift,  tmotorVex393_MC29, openLoop, driveRight)
@@ -304,8 +302,8 @@ task usercontrol()
 {
 	while (true)
 	{
-		setLDriveBase(abs(vexRT[ Ch3 ]) > 15 ? vexRT[ Ch3 ] : 0); //mess with deadbands
-		setRDriveBase(abs(vexRT[ Ch2 ]) > 15 ? vexRT[ Ch2 ] : 0);
+		setLDriveBase(abs(vexRT[ Ch3 ]) > 20 ? vexRT[ Ch3 ] : 0); //mess with deadbands
+		setRDriveBase(abs(vexRT[ Ch2 ]) > 20 ? vexRT[ Ch2 ] : 0);
 
 		/*
 		// keep the lift up when holding stars
