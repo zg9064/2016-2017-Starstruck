@@ -22,23 +22,23 @@
 #define LOOP_SPEED              25
 #define MAX_POWER              127
 #define MIN_POWER             -127
-#define PID_SENSOR_INDEX    myEncoder
-#define PID_SENSOR_SCALE    1
+//#define PID_SENSOR_INDEX    myEncoder
+//#define PID_SENSOR_SCALE    1
 
-#define PID_MOTOR_INDEX     myMotor
-#define PID_MOTOR_SCALE     -1
+//#define PID_MOTOR_INDEX     myMotor
+//#define PID_MOTOR_SCALE     -1
 
-#define PID_INTEGRAL_LIMIT  50
+//#define PID_INTEGRAL_LIMIT  50
 
 #define SAFETY_DELAY				200
 
-float  pid_Kp = 2.0;
+/*float  pid_Kp = 2.0;
 float  pid_Ki = 0.04;
 float  pid_Kd = 0.0;
 
 static int   pidRunning = 1;
 static float pidRequestedValue;
-
+*/
 // final motor drive
 long            motor_driveR;            /// RIGHT
 long            motor_driveL;            /// LEFT
@@ -183,10 +183,10 @@ setClaw( int power )
 }
 
 
-#warning "stopAll"
+#warning "allStop"
 //stops everything
 void
-stopAll()
+allStop()
 {
 	move( 1000, 0, 0 );
 	setLift( 1000, 0 );
@@ -195,7 +195,7 @@ stopAll()
 
 
 //task
-#warning "PID Controller"
+/*#warning "PID Controller"
 task pidController()
 {
 	/*
@@ -269,6 +269,7 @@ task pidController()
 	}
 	*/
 }
+*/
 
 
 #warning "pre-auton"
