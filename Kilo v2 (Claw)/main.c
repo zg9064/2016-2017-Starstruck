@@ -1,9 +1,5 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
-#pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, in1,    rightClawPot,   sensorNone)
-#pragma config(Sensor, in2,    rightLiftPot,   sensorPotentiometer)
-#pragma config(Sensor, I2C_1,  oneone,         sensorSpare2OnI2CPort,         , 0 )
-#pragma config(Sensor, I2C_2,  twotwo,         sensorSpare3OnI2CPort,         , 0 )
+#pragma config(Sensor, in1,    rightClawPot,   sensorPotentiometer)
 #pragma config(Motor,  port1,           rightClaw,     tmotorVex393_HBridge, openLoop, driveRight)
 #pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, reversed, driveRight)
@@ -47,22 +43,15 @@ long            motor_driveL;            /// LEFT
 ///// Team 62K Robot                                    /////
 ///// Main Code                                         /////
 ///// Authors: Abner Benitez                            /////
-///// Last Modified: Nov. 23, 2016                      /////
+///// Last Modified: Dec. 4, 2016                      /////
 *////////////////////////////////////////////////////////////
 
 /*
 To Do List
-1. Try an empty main()
-2. what does it mean to have greater resolution in sensors?
-3. startTask( ); gotta use this within tasks
-4. nMotorEncoder[ ]
-5. Stop sudden acceleration
-6. Map out TeleOp buttons
-7. Fiddle with claw and arm function in TeleOp
+1. Add slew control
 */
 
 #warning "setters"
-
 //universal setters
 void
 setSensorVal()
@@ -185,7 +174,7 @@ setClaw( int power )
 }
 
 
-#warning "allStop"
+#warning "stopAll"
 //stops everything
 void
 allStop()
@@ -194,6 +183,13 @@ allStop()
 	setLift( 1000, 0 );
 	setClaw( 1000, 0 );
 }
+
+#warning "PID Controller"
+task PIDcontroller()
+{
+
+}
+
 
 #warning "pre-auton"
 void pre_auton()
@@ -208,8 +204,7 @@ void pre_auton()
 	// to display your team name on the LCD in this function.
 	// bDisplayCompetitionStatusOnLcd = false;
 
-	// All activities that occur before the competition starts
-	// Example: clearing encoders, setting servo positions, ...
+	setSensorVal();
 }
 
 
