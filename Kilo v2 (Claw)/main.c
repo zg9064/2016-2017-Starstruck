@@ -50,7 +50,7 @@ long            motor_driveL;            /// LEFT
 
 /*
 To Do List
-1. Add slew control
+1. Add slew rate control
 */
 
 #warning "setters"
@@ -71,7 +71,7 @@ setLDriveBase( int valueL, int time )
 	delay( SAFETY_DELAY );
 
 	motor[ LDriveBase ] = valueL;
-	delay( time );
+	sleep( time );
 }
 
 
@@ -82,7 +82,7 @@ setRDriveBase( int valueR, int time )
 	delay( SAFETY_DELAY );
 
 	motor[ RDriveBase ] = valueR;
-	delay( time );
+	sleep( time );
 }
 
 
@@ -122,7 +122,7 @@ setLift( int time, int power )
 	motor[ leftLift ] = power/2;
 	motor[ rightMidLift ] = power/2;
 	motor[ rightLift ] = power/2;
-	delay( SAFETY_DELAY );
+	sleep( SAFETY_DELAY );
 
 	motor[ leftMidLift ] = power;
 	motor[ leftLift ] = power;
@@ -134,7 +134,7 @@ setLift( int time, int power )
 	motor[ leftLift ] = 0;
 	motor[ rightMidLift ] = 0;
 	motor[ rightLift ] = 0;
-	//delay(100);
+	//sleep(100);
 }
 
 
@@ -143,7 +143,7 @@ setClaw( int time, int power )
 {
 	motor[ leftClaw ] = power;
   motor[ rightClaw ] = power;
-	delay( time );
+	sleep( time );
 }
 
 
@@ -207,6 +207,8 @@ void pre_auton()
 	// bDisplayCompetitionStatusOnLcd = false;
 
 	setSensorVal();
+	//clearLCDLine(0);
+	displayLCDCenteredString(0, "Pre-auton");
 }
 
 
@@ -215,6 +217,8 @@ task autonomous()
 {
 	// Remove this function call once you have "real" code.
 	AutonomousCodePlaceholderForTesting();
+	//clearLCDLine(0);
+	displayLCDCenteredString(0, "Autonomous testing Abner"); //this is temp
 }
 
 
@@ -222,12 +226,14 @@ task autonomous()
 task usercontrol()
 {
 	setSensorVal();
+	//clearLCDLine(0);
+	displayLCDCenteredString(0, "Usercontrol testing Abner"); //this is temp
+
 	while (1)
 	{
 		//drive base
 		setLDriveBase(abs(vexRT[ Ch3 ]) > 20 ? vexRT[ Ch3 ] : 0); //mess with deadbands
 		setRDriveBase(abs(vexRT[ Ch2 ]) > 20 ? vexRT[ Ch2 ] : 0);
-
 
 
 	  //lift
