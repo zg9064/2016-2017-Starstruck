@@ -1,5 +1,9 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
-#pragma config(Sensor, in1,    test,           sensorPotentiometer)
+#pragma config(I2C_Usage, I2C1, i2cSensors)
+#pragma config(Sensor, in1,    rightClawPot,   sensorNone)
+#pragma config(Sensor, in2,    rightLiftPot,   sensorPotentiometer)
+#pragma config(Sensor, I2C_1,  oneone,         sensorSpare2OnI2CPort,         , 0 )
+#pragma config(Sensor, I2C_2,  twotwo,         sensorSpare3OnI2CPort,         , 0 )
 #pragma config(Motor,  port1,           rightClaw,     tmotorVex393_HBridge, openLoop, driveRight)
 #pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, reversed, driveRight)
@@ -58,6 +62,16 @@ To Do List
 */
 
 #warning "setters"
+
+//universal setters
+void
+setSensorVal()
+{
+	//don't set potentiometer values here
+
+}
+
+
 //setters for Autonomous
 void
 setLDriveBase( int valueL, int time )
@@ -210,10 +224,17 @@ task autonomous()
 #warning "usercontrol"
 task usercontrol()
 {
-	while (true)
+	setSensorVal();
+	while (1)
 	{
+		//drive base
 		setLDriveBase(abs(vexRT[ Ch3 ]) > 20 ? vexRT[ Ch3 ] : 0); //mess with deadbands
 		setRDriveBase(abs(vexRT[ Ch2 ]) > 20 ? vexRT[ Ch2 ] : 0);
+
+
+
+	  //lift
+		setLift((vexRT[ Btn6U ] - vexRT[ Btn6D ]) * -127);
 
 		/*
 		// keep the lift up when holding stars
@@ -221,9 +242,14 @@ task usercontrol()
 		 setArms(10);
 		*/
 
-		setLift((vexRT[ Btn6U ] - vexRT[ Btn6D ]) * -127);
 
+		//claw
 		setClaw((vexRT[ Btn5U ] - vexRT[ Btn5D ]) * -127);
+
+		//if potentiometer meets condition && buttons for claw are not pressed -> keep low constant power to claw
+		if(SensorValue[ rightClawPot ] < 800 && (vexRT[ Btn5U ] + vexRT[ Btn5D ] == 0))
+			setClaw(-20);
+
 
 		wait1Msec(20); //don't hog the CPU :)
 	}
