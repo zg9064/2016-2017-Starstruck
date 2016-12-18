@@ -1,10 +1,13 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
+#pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    rightClawPot,   sensorPotentiometer)
+#pragma config(Sensor, I2C_1,  leftIEM,        sensorQuadEncoderOnI2CPort,    , AutoAssign )
+#pragma config(Sensor, I2C_2,  rightIEM,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port1,           rightClaw,     tmotorVex393_HBridge, openLoop, driveRight)
 #pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, driveRight)
-#pragma config(Motor,  port4,           LFrontDriveBase, tmotorVex393_MC29, openLoop, driveLeft)
-#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, driveRight)
+#pragma config(Motor,  port4,           LFrontDriveBase, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_1)
+#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_2)
 #pragma config(Motor,  port6,           leftLift,      tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port7,           leftClaw,      tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port8,           rightMidLift,  tmotorVex393_MC29, openLoop, driveRight)
@@ -16,21 +19,20 @@ task main()
 {
 	while(1)
 	{
-		motor[ rightClaw ] = vexRT[ Btn7U ] * 100;
-		motor[ LDriveBase ] = vexRT[ Btn7R ] * 100;
-		motor[ RDriveBase ] = vexRT[ Btn7D ] * 100;
-
-		motor[ leftLift ] = vexRT[ Btn7L ] * 100;
-
-
-		motor[ leftClaw ] = vexRT[ Btn8U ] * 100;
-		motor[ rightMidLift ] = vexRT[ Btn8R ] * 100;
-		motor[ rightLift ] = vexRT[ Btn8D ] * 100;
-		motor[ leftMidLift ] = vexRT[ Btn8L ] * 100;
+		motor[ LDriveBase ] = vexRT[ Btn7U ] * 100;
+		motor[ RDriveBase ] = vexRT[ Btn7R ] * 100;
+		motor[ LFrontDriveBase ] = vexRT[ Btn7D ] * 100;
+		motor[ RFrontDriveBase ] = vexRT[ Btn7L ] * 100;
 
 
-		motor[ LFrontDriveBase ] = vexRT[ Btn5U ];
-		motor[ RFrontDriveBase ] = vexRT[ Btn5D ];
+		motor[ leftLift ] = vexRT[ Btn8U ] * 100;
+		motor[ leftMidLift ] = vexRT[ Btn8R ] * 100;
+		motor[ rightMidLift ] = vexRT[ Btn8D ] * 100;
+		motor[ rightLift ] = vexRT[ Btn8L ] * 100;
+
+
+		motor[ leftClaw ] = vexRT[ Btn5U ];
+		motor[ rightClaw ] = vexRT[ Btn5D ];
 
 		//extra buttons
 		/*
