@@ -29,7 +29,10 @@
 #define MIN_POWER             -127
 
 
-#define SAFETY_DELAY				200
+#define SAFETY_DELAY					 200
+#define CLAW_TRIGGER					1028 //last working val is 800
+#define CLAW_LIMIT						 //find the right val for this
+#define CLAW_GRASP_POWER			 -60
 
 
 // final motor drive
@@ -54,6 +57,11 @@ long            motor_driveL;            /// LEFT
 /*
 To Do List
 1. Add slew rate control
+2. Experiment with trim on lift
+3. Switch claw power so + -> claw close
+4. Experiment with a auto liftUp + clawOpen + liftDown for teleOp
+5. Use the preprocessor
+6. Auton methods needs some more testing
 */
 
 #warning "setters"
@@ -70,10 +78,10 @@ setSensorVal()
 void
 setLDriveBase( int valueL, int time )
 {
-	motor[ LDriveBase ] = valueL/2;
+	setRDriveBase(valueR/2);
 	delay( SAFETY_DELAY );
 
-	motor[ LDriveBase ] = valueL;
+	setRDriveBase(valueR/2);
 	sleep( time );
 }
 
@@ -81,10 +89,10 @@ setLDriveBase( int valueL, int time )
 void
 setRDriveBase( int valueR, int time )
 {
-	motor[ RDriveBase ] = valueR/2;
+	setRDriveBase(valueR/2);
 	delay( SAFETY_DELAY );
 
-	motor[ RDriveBase ] = valueR;
+	setRDriveBase(valueR/2);
 	sleep( time );
 }
 
@@ -95,6 +103,7 @@ void
 setLDriveBase( int valueL )
 {
 	motor[ LDriveBase ] = valueL;
+	motor[ LFrontDriveBase ] = valueL;
 }
 
 
@@ -102,6 +111,7 @@ void
 setRDriveBase( int valueR )
 {
 	motor[ RDriveBase ] = valueR;
+	motor[ LFrontDriveBase ] = valueR;
 }
 
 
@@ -121,22 +131,13 @@ move( int time, int left, int right )
 void
 setLift( int time, int power )
 {
-	motor[ leftMidLift ] = power/2;
-	motor[ leftLift ] = power/2;
-	motor[ rightMidLift ] = power/2;
-	motor[ rightLift ] = power/2;
+	setLift(power/2);
 	sleep( SAFETY_DELAY );
 
-	motor[ leftMidLift ] = power;
-	motor[ leftLift ] = power;
-	motor[ rightMidLift ] = power;
-	motor[ rightLift ] = power;
+	setLift(power);
 	delay( time );
 
-	motor[ leftMidLift ] = 0;
-	motor[ leftLift ] = 0;
-	motor[ rightMidLift ] = 0;
-	motor[ rightLift ] = 0;
+	setLift(0);
 	//sleep(100);
 }
 
@@ -145,7 +146,7 @@ void
 setClaw( int time, int power )
 {
 	motor[ leftClaw ] = power;
-  motor[ rightClaw ] = power;
+	motor[ rightClaw ] = power;
 	sleep( time );
 }
 
@@ -190,11 +191,20 @@ allStop()
 }
 
 #warning "PID Controller"
-task PIDcontroller()
+task PIDclaw()
+{
+	float Kp
+
+	while(1)
+	{
+
+	}
+}
+
+task PIDdriveBase()
 {
 
 }
-
 
 #warning "pre-auton"
 void pre_auton()
@@ -235,27 +245,26 @@ task usercontrol()
 	while (1)
 	{
 		//drive base
-		setLDriveBase(abs(vexRT[ Ch3 ]) > 20 ? vexRT[ Ch3 ] : 0); //mess with deadbands
+		setLDriveBase(abs(vexRT[ Ch3 ]) > 20 ? vexRT[ Ch3 ] : 0);
 		setRDriveBase(abs(vexRT[ Ch2 ]) > 20 ? vexRT[ Ch2 ] : 0);
 
-
-	  //lift
+		//lift
 		setLift((vexRT[ Btn6U ] - vexRT[ Btn6D ]) * -127);
-
-		/*
-		// keep the lift up when holding stars
-		if(vexRT[ Btn5U ] || vexRT[ Btn6U ]) //test with == 1
-		 setArms(10);
-		*/
-
+		//setLift(vexRT[ Btn6U ] || vexRT[ Btn6D ] ? (vexRT[ Btn6U ] - vexRT[ Btn6D ]) * -127 : 20); //experiment with Trim, careful with stalling
 
 		//claw
+		//if(SensorValue[ rightClawPot ] < CLAW_LIMIT) //add claw limit
 		setClaw((vexRT[ Btn5U ] - vexRT[ Btn5D ]) * -127);
 
-		//if potentiometer meets condition && buttons for claw are not pressed -> keep low constant power to claw
-		if(SensorValue[ rightClawPot ] < 1028 && (vexRT[ Btn5U ] + vexRT[ Btn5D ] == 0)) //last working val is 800
-			setClaw(-60);
+		//auto claw grasp
+		if(SensorValue[ rightClawPot ] < CLAW_TRIGGER && (vexRT[ Btn5U ] + vexRT[ Btn5D ] == 0))
+			setClaw(CLAW_GRASP_POWER);
 
+		//auto release claw w/ lift
+
+
+		//PID (yay)
+		//startTask(PIDclaw());
 
 		wait1Msec(20); //don't hog the CPU :)
 	}
