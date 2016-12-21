@@ -27,6 +27,9 @@
 #define LOOP_SPEED              25
 #define MAX_POWER              127
 #define MIN_POWER             -127
+#define TPR_STANDARD				 627.2
+#define TPR_HIGH_SPEED			 	 392
+#define TPR_TURBO					 261.333
 
 
 #define SAFETY_DELAY					 200
