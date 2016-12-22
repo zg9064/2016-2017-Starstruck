@@ -44,16 +44,7 @@ long            motor_driveL;            /// LEFT
 ///// Since: Nov. 10, 2016                              /////
 *////////////////////////////////////////////////////////////
 
-/*
-To Do List
-1. Try an empty main()
-2. what does it mean to have greater resolution in sensors?
-3. startTask( ); gotta use this within tasks
-4. nMotorEncoder[ ]
-*/
-
 //setters
-
 void
 setMotorL( int valueL )
 {

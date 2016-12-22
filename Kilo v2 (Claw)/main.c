@@ -54,7 +54,7 @@ long            motor_driveL;            /// LEFT
 ///// Team 62K Robot                                    /////
 ///// Main Code                                         /////
 ///// Authors: Abner Benitez                            /////
-///// Last Modified: Dec. 4, 2016                      /////
+///// Last Modified: Dec. 21, 2016                      /////
 *////////////////////////////////////////////////////////////
 
 /*
