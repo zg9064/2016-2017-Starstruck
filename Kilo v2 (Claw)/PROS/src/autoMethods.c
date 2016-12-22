@@ -1,3 +1,5 @@
+#include "main.h"
+
 //setters for Autonomous
 void
 setLDriveBase( int valueL, int time )
@@ -6,7 +8,7 @@ setLDriveBase( int valueL, int time )
 	delay( SAFETY_DELAY );
 
 	setLDriveBase(valueL/2);
-	sleep( time );
+	delay( time );
 }
 
 
@@ -17,7 +19,7 @@ setRDriveBase( int valueR, int time )
 	delay( SAFETY_DELAY );
 
 	setRDriveBase(valueR/2);
-	sleep( time );
+	delay( time );
 }
 
 
@@ -38,7 +40,7 @@ void
 setLift( int time, int power )
 {
 	setLift(power/2);
-	sleep( SAFETY_DELAY );
+	delay( SAFETY_DELAY );
 
 	setLift(power);
 	delay( time );
@@ -53,5 +55,5 @@ setClaw( int time, int power )
 {
 	motor[ leftClaw ] = power;
 	motor[ rightClaw ] = power;
-	sleep( time );
+	delay( time );
 }

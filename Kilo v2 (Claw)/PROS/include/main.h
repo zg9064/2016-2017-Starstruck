@@ -1,6 +1,6 @@
 /** @file main.h
  * @brief Header file for global functions
- * 
+ *
  * Any experienced C or C++ programmer knows the importance of header files. For those who
  * do not, a header file allows multiple files to reference functions in other files without
  * necessarily having to see the code (and therefore causing a multiple definition). To make
@@ -44,6 +44,27 @@
 #define MAIN_H_
 
 #include <API.h>
+#include "autoMethods.h"
+#include "teleOpMethods.h"
+#include "universalMethods.h"
+
+#define LOOP_SPEED              25
+#define MAX_POWER              127
+#define MIN_POWER             -127
+#define TPR_STANDARD				 627.2
+#define TPR_HIGH_SPEED			 	 392
+#define TPR_TURBO					 261.333
+
+
+#define SAFETY_DELAY					 200
+#define CLAW_TRIGGER					1028 //last working val is 800
+#define CLAW_LIMIT						 //find the right val for this
+#define CLAW_GRASP_POWER			 -60
+
+
+// final motor drive
+long            motor_driveR;            /// RIGHT
+long            motor_driveL;            /// LEFT
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus

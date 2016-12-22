@@ -1,3 +1,5 @@
+#include "main.h"
+
 //setters for TeleOp
 void
 setLDriveBase( int valueL )

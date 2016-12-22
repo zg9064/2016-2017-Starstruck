@@ -1,3 +1,6 @@
+#ifndef _AUTO_METHODS_
+#define _AUTO_METHODS_
+
 //setters for Autonomous
 void
 setLDriveBase( int valueL, int time );
@@ -17,3 +20,4 @@ setLift( int time, int power );
 
 void
 setClaw( int time, int power );
+#endif

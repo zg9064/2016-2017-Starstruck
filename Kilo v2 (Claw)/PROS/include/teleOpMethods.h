@@ -1,3 +1,6 @@
+#ifndef _TELEOP_METHODS_
+#define _TELEOP_METHODS_
+
 //setters for TeleOp
 void
 setLDriveBase( int valueL );
@@ -15,3 +18,4 @@ setLift( int power );
 
 void
 setClaw( int power );
+#endif

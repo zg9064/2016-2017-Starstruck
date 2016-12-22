@@ -1,3 +1,6 @@
+#ifndef _UNIVERSAL_METHODS_
+#define _UNIVERSAL_METHODS_
+
 #warning "setters"
 //universal setters
 void
@@ -8,3 +11,4 @@ setSensorVal();
 //stops everything
 void
 allStop();
+#endif
