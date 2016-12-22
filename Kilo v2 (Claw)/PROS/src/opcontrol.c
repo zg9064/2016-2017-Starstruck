@@ -34,7 +34,19 @@ void operatorControl()
 
 	while (1)
 	{
-		
+		//drive base
+		setLDriveBase(abs(joystickGetAnalog(1, 3)) > 20 ? joystickGetAnalog(1, 3) : 0);
+		setRDriveBase(abs(joystickGetAnalog(1, 2)) > 20 ? joystickGetAnalog(1, 2) : 0);
+
+		//lift
+		setLift((joystickGetDigital(1, 6, JOY_UP) - joystickGetDigital(1, 6, JOY_DOWN)) * -127);
+		//setLift(vexRT[ Btn6U ] || vexRT[ Btn6D ] ? (vexRT[ Btn6U ] - vexRT[ Btn6D ]) * -127 : 20); //experiment with Trim, careful with stalling
+
+		//claw
+		//if(SensorValue[ rightClawPot ] < CLAW_LIMIT) //add claw limit
+		setClaw((joystickGetDigital(1, 5, JOY_UP)) - joystickGetDigital(1, 5, JOY_DOWN) * -127);
+
+
 
 		delay(20); //don't hog the CPU :)
 	}
