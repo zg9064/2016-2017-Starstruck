@@ -65,6 +65,7 @@ To Do List
 4. Experiment with a auto liftUp + clawOpen + liftDown for teleOp
 5. Use the preprocessor
 6. Auton methods needs some more testing
+7. Experiment with true speed :D
 */
 
 #warning "setters"
