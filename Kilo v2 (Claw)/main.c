@@ -5,9 +5,9 @@
 #pragma config(Sensor, I2C_2,  rightIEM,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port1,           rightClaw,     tmotorVex393_HBridge, openLoop, driveRight)
 #pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft)
-#pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, driveRight)
+#pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, reversed, driveRight)
 #pragma config(Motor,  port4,           LFrontDriveBase, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_1)
-#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, reversed, driveRight, encoderPort, I2C_2)
+#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_2)
 #pragma config(Motor,  port6,           leftLift,      tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port7,           leftClaw,      tmotorVex393_MC29, openLoop, reversed, driveLeft)
 #pragma config(Motor,  port8,           rightMidLift,  tmotorVex393_MC29, openLoop, driveRight)
@@ -78,30 +78,6 @@ setSensorVal()
 }
 
 
-//setters for Autonomous
-void
-setLDriveBase( int valueL, int time )
-{
-	setRDriveBase(valueR/2);
-	delay( SAFETY_DELAY );
-
-	setRDriveBase(valueR/2);
-	sleep( time );
-}
-
-
-void
-setRDriveBase( int valueR, int time )
-{
-	setRDriveBase(valueR/2);
-	delay( SAFETY_DELAY );
-
-	setRDriveBase(valueR/2);
-	sleep( time );
-}
-
-
-
 //setters for TeleOp
 void
 setLDriveBase( int valueL )
@@ -120,6 +96,58 @@ setRDriveBase( int valueR )
 
 
 #warning "action methods"
+//setters for Autonomous
+void
+setLDriveBase( int valueL, int time )
+{
+	setLDriveBase(valueL/2);
+	delay( SAFETY_DELAY );
+
+	setLDriveBase(valueL/2);
+	sleep( time );
+}
+
+
+void
+setRDriveBase( int valueR, int time )
+{
+	setRDriveBase(valueR/2);
+	delay( SAFETY_DELAY );
+
+	setRDriveBase(valueR/2);
+	sleep( time );
+}
+
+
+
+//action methods for TeleOp
+void
+move( int left, int right )
+{
+	setLDriveBase( left );
+	setRDriveBase( right );
+}
+
+
+void
+setLift( int power )
+{
+	motor[ leftMidLift ] = power;
+	motor[ leftLift ] = power;
+	motor[ rightMidLift ] = power;
+	motor[ rightLift ] = power;
+}
+
+
+void
+setClaw( int power )
+{
+	motor[ leftClaw ] = power;
+	motor[ rightClaw ] = power;
+
+}
+
+
 //action methods for Autonomous
 void
 move( int time, int left, int right )
@@ -152,35 +180,6 @@ setClaw( int time, int power )
 	motor[ leftClaw ] = power;
 	motor[ rightClaw ] = power;
 	sleep( time );
-}
-
-
-
-//action methods for TeleOp
-void
-move( int left, int right )
-{
-	setLDriveBase( left );
-	setRDriveBase( right );
-}
-
-
-void
-setLift( int power )
-{
-	motor[ leftMidLift ] = power;
-	motor[ leftLift ] = power;
-	motor[ rightMidLift ] = power;
-	motor[ rightLift ] = power;
-}
-
-
-void
-setClaw( int power )
-{
-	motor[ leftClaw ] = power;
-	motor[ rightClaw ] = power;
-
 }
 
 
