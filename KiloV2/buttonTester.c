@@ -7,7 +7,7 @@
 #pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, reversed, driveRight)
 #pragma config(Motor,  port4,           LFrontDriveBase, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_1)
-#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_2)
+#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, reversed, driveRight, encoderPort, I2C_2)
 #pragma config(Motor,  port6,           leftLift,      tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port7,           leftClaw,      tmotorVex393_MC29, openLoop, reversed, driveLeft)
 #pragma config(Motor,  port8,           rightMidLift,  tmotorVex393_MC29, openLoop, driveRight)

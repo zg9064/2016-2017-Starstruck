@@ -1,14 +1,13 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    rightClawPot,   sensorPotentiometer)
-#pragma config(Sensor, in2,    rightLiftPot,   sensorPotentiometer)
 #pragma config(Sensor, I2C_1,  rightIEM,       sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  leftIEM,        sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port1,           rightClaw,     tmotorVex393_HBridge, openLoop, driveRight)
 #pragma config(Motor,  port2,           LDriveBase,    tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port3,           RDriveBase,    tmotorVex393_MC29, openLoop, reversed, driveRight)
-#pragma config(Motor,  port4,           LFrontDriveBase, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_1)
-#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_2)
+#pragma config(Motor,  port4,           LFrontDriveBase, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_2)
+#pragma config(Motor,  port5,           RFrontDriveBase, tmotorVex393_MC29, openLoop, reversed, driveRight, encoderPort, I2C_1)
 #pragma config(Motor,  port6,           leftLift,      tmotorVex393_MC29, openLoop, driveLeft)
 #pragma config(Motor,  port7,           leftClaw,      tmotorVex393_MC29, openLoop, reversed, driveLeft)
 #pragma config(Motor,  port8,           rightMidLift,  tmotorVex393_MC29, openLoop, driveRight)
@@ -93,7 +92,7 @@ void
 setRDriveBase( int valueR )
 {
 	motor[ RDriveBase ] = valueR;
-	motor[ LFrontDriveBase ] = valueR;
+	motor[ RFrontDriveBase ] = valueR;
 }
 
 
@@ -258,15 +257,15 @@ task usercontrol()
 		//setLift(vexRT[ Btn6U ] || vexRT[ Btn6D ] ? (vexRT[ Btn6U ] - vexRT[ Btn6D ]) * -127 : 20); //experiment with Trim, careful with stalling
 
 		//claw
-		//if(SensorValue[ rightClawPot ] < CLAW_LIMIT) //add claw limit
-		setClaw((vexRT[ Btn5U ] - vexRT[ Btn5D ]) * -127);
 
-		//auto claw grasp
-		if(SensorValue[ rightClawPot ] < CLAW_TRIGGER && (vexRT[ Btn5U ] + vexRT[ Btn5D ] == 0))
+		if((vexRT[ Btn5U ] || vexRT[ Btn5D ]) && (SensorValue[ rightClawPot ] <= CLAW_TRIGGER))
 			setClaw(CLAW_GRASP_POWER);
 
-		//auto release claw w/ lift
+		if((vexRT[ Btn5U ] + vexRT[ Btn5D ] != 1) && (SensorValue[ rightClawPot ] > CLAW_TRIGGER))
+			setClaw((vexRT[ Btn5U ] - vexRT[ Btn5D ]) * -127);
 
+		//auto claw grasp
+		//if(SensorValue[ rightClawPot ] < CLAW_TRIGGER && (vexRT[ Btn5U ] + vexRT[ Btn5D ] == 0))
 
 		//PID (yay)
 		//startTask(PIDclaw());
